@@ -7,6 +7,7 @@ export class Player {
         this.vit = 5;
         this.bp = 0;
         this.talent = 1.0; // 才能値
+        this.currentJob = "novice";
     }
 
     // 経験値獲得とレベルアップのロジックをプレイヤー自身に持たせる
