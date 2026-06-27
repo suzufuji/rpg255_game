@@ -1,28 +1,44 @@
-// 拡張子の .js は絶対に省略しちゃダメだぜ！
+// 2つの異なるクラスファイルをインポートして統合するぜ！
 import { Player } from './Player.js';
+import { JobManager } from './JobManager.js';
 
-// プレイヤーの実体（インスタンス）を生成
 const player = new Player();
+const jobManager = new JobManager();
 
-// 画面を更新する関数
 function updateUI() {
     document.getElementById('display-lv').innerText = player.lv;
     document.getElementById('display-exp').innerText = player.exp;
     document.getElementById('display-str').innerText = player.str;
+    // 現在の職業名を表示
+    document.getElementById('display-job').innerText = jobManager.jobTable[player.currentJob].name;
+    // 才能値を表示（小数点第1位まで）
+    document.getElementById('display-talent').innerText = player.talent.toFixed(1);
 }
 
-// ボタンを押したときの戦闘訓練処理
+// ボタンアクション：戦闘訓練
 window.trainPlayer = function() {
-    // 15Expを獲得させてみる
-    const isLevelUp = player.gainExp(15);
-    
-    if (isLevelUp) {
-        alert(`★レベルアップ演算成功★：Lv ${player.lv} になったぜ！`);
+    player.gainExp(15);
+    updateUI();
+};
+
+// ボタンアクション：転生実行
+window.triggerReincarnate = function() {
+    const success = jobManager.reincarnate(player);
+    if (success) {
+        alert("★魂の転生完了★ 才能が覚醒し、レベル1から再スタートだぜ！");
     }
     updateUI();
 };
 
-// 起動時に初期画面を表示
+// ボタンアクション：転職（戦士へ）
+window.becomeWarrior = function() {
+    const jobName = jobManager.changeJob(player, "warrior");
+    if (jobName) {
+        alert(`ジョブチェンジ！ 【${jobName}】 になったぜ！`);
+    }
+    updateUI();
+};
+
 window.onload = () => {
     updateUI();
 };
