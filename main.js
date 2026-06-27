@@ -1,6 +1,6 @@
-import { Player } from './Player.js';
-import { JobManager } from './JobManager.js';
-import { SaveManager } from './SaveManager.js';
+import { Player } from './player.js';
+import { JobManager } from './jobManager.js';
+import { SaveManager } from './saveManager.js';
 
 const player = new Player();
 const jobManager = new JobManager();
