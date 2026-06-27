@@ -3,46 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Monochrome Quest 255 - Class Test</title>
+    <title>Monochrome Quest 255 - Battle Screen</title>
+    <style>
+        /* アニメーション用のマニアックなCSS仕掛けだぜ！ */
+        .character { transition: transform 0.1s ease-in-out; }
+        .attack-left { transform: translateX(40px); }
+        .attack-right { transform: translateX(-40px); }
+        .hp-bar { transition: width 0.3s ease-out; background: #33ff33; height: 100%; width: 100%; }
+    </style>
 </head>
-<body style="background-color: #050505; color: #33ff33; font-family: monospace; padding: 20px; font-size: 16px;">
+<body style="background-color: #050505; color: #33ff33; font-family: monospace; padding: 15px; font-size: 16px;">
 
-    <h2>【 クラス分割：量子通信ver3 】</h2>
+    <h2>【 量子通信：視覚戦闘ver1.0 】</h2>
     
-    <div style="border: 1px solid #33ff33; padding: 15px; max-width: 100%; box-sizing: border-box; background:#0a0a0a;">
-        ステータス演算結果：<br>
-        ・職業(JOB): <span id="display-job">ノービス</span><br>
-        ・才能(TALENT): <span id="display-talent">1.0</span><br>
-        <hr style="border-color: #33ff33;">
-        ・Level: <span id="display-lv">1</span><br>
-        ・Exp: <span id="display-exp">0</span><br>
-        ・力(STR): <span id="display-str">5</span>
-        ・HP: <span id="display-hp">100</span> / <span id="display-max-hp">100</span><br>
-        ・所持金: <span id="display-gold">0</span> G<br>
+    <div style="border: 1px solid #33ff33; padding: 10px; background:#0a0a0a; font-size: 14px; margin-bottom: 10px;">
+        職業: <span id="display-job">-</span> | 才能: <span id="display-talent">-</span> | Lv: <span id="display-lv">-</span><br>
+        Exp: <span id="display-exp">-</span> | 力: <span id="display-str">-</span> | 所持金: <span id="display-gold">-</span> G
     </div>
-    <br>
-    
+
+    <div id="battle-stage" style="border: 2px solid #33ff33; background: #000; height: 180px; position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 10px; display: none;">
+        
+        <div style="position: absolute; left: 20px; bottom: 20px; width: 100px; text-align: center;">
+            <div style="font-size: 11px; margin-bottom: 4px;">PLAYER</div>
+            <div style="border: 1px solid #33ff33; width: 100px; height: 8px; background: #222; margin-bottom: 15px;">
+                <div id="player-hp-bar" class="hp-bar"></div>
+            </div>
+            <div id="char-player" class="character" style="width: 50px; height: 65px; margin: 0 auto; position: relative;">
+                <div style="background: #33ff33; width: 34px; height: 34px; border-radius: 6px; margin: 0 auto;"></div><div style="background: #22aa22; width: 50px; height: 31px; border-radius: 4px; margin-top: 1px;"></div></div>
+        </div>
+
+        <div style="position: absolute; right: 20px; bottom: 20px; width: 120px; text-align: center;">
+            <div id="enemy-name-plate" style="font-size: 11px; margin-bottom: 4px; white-space: nowrap; overflow: hidden;">ENEMY</div>
+            <div style="border: 1px solid #ff3333; width: 100px; height: 8px; background: #222; margin-bottom: 15px; margin-left: 10px;">
+                <div id="enemy-hp-bar" class="hp-bar" style="background:#ff3333;"></div>
+            </div>
+            <div id="char-enemy" class="character" style="width: 50px; height: 65px; margin: 0 auto; position: relative;">
+                <div style="background: #ff3333; width: 34px; height: 34px; border-radius: 5px; margin: 0 auto;"></div><div style="background: #aa2222; width: 46px; height: 31px; border-radius: 8px; margin-top: 1px; margin-left: 2px;"></div></div>
+        </div>
+        
+        <div id="battle-turn" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); font-size: 12px; background: #111; padding: 2px 8px; border: 1px solid #33ff33;">TURN 0</div>
+    </div>
+
     <button id="btn-train" style="background:#111; color:#3f3; border:1px solid #3f3; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px;">
-        戦闘訓練（+15 Exp）を実行する
+        修業の素振り（+15 Exp）
     </button>
 
     <button id="btn-explore" style="background:#3333ff; color:#fff; border:1px solid #3333ff; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px; font-weight: bold;">
-        ⚔️ エリアを探索する（バトル発生）
+        ⚔️ 敵のエリアへ出撃する
     </button>
 
-    <button id="btn-warrior" style="background:#111; color:#3f3; border:1px solid #3f3; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px;">
-        ジョブチェンジ【戦士】
+    <button id="btn-attack" style="display: none; background:#ff3333; color:#fff; border:1px solid #ff3333; padding: 15px 20px; font-size: 18px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px; font-weight: bold;">
+        💥 ターンを進める（攻撃実行！）
     </button>
 
-    <button id="btn-reincarnate" style="background:#ff3333; color:#fff; border:1px solid #ff3333; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 20px;">
-        ★魂の転生を実行する（Lv10必須）★
-    </button>
-
-    <h3>【 量子戦闘記録ログ 】</h3>
-    <div id="log-console" style="border: 1px dashed #33ff33; background: #000; padding: 10px; height: 150px; overflow-y: auto; font-size: 13px; color: #a9ffa9; line-height: 1.5;">
-        ここに戦闘の記録が出力されるのぜ。探索ボタンを押してみな！
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <button id="btn-warrior" style="flex: 1; background:#111; color:#3f3; border:1px solid #3f3; padding: 10px; font-size: 14px; border-radius: 5px;">転職【戦士】</button>
+        <button id="btn-reincarnate" style="flex: 1; background:#ff3333; color:#fff; border:1px solid #ff3333; padding: 10px; font-size: 14px; border-radius: 5px;">魂の転生(Lv10)</button>
     </div>
 
-    <script type="module" src="./main.js?v=3"></script>
+    <h3>【 戦闘通信記録ログ 】</h3>
+    <div id="log-console" style="border: 1px dashed #33ff33; background: #000; padding: 10px; height: 100px; overflow-y: auto; font-size: 13px; color: #a9ffa9; line-height: 1.5;">
+        エリアに出撃すると戦闘シーンが展開されるのぜ！
+    </div>
+
+    <script type="module" src="./main.js?v=6"></script>
 </body>
 </html>
