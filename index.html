@@ -2,9 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
     <title>Monochrome Quest 255 - Class Test</title>
 </head>
 <body style="background-color: #050505; color: #33ff33; font-family: monospace; padding: 20px; font-size: 16px;">
@@ -13,14 +11,25 @@
     
     <div style="border: 1px solid #33ff33; padding: 15px; max-width: 100%; box-sizing: border-box; background:#0a0a0a;">
         ステータス演算結果：<br>
+        ・職業(JOB): <span id="display-job">ノービス</span><br>
+        ・才能(TALENT): <span id="display-talent">1.0</span><br>
+        <hr style="border-color: #33ff33;">
         ・Level: <span id="display-lv">1</span><br>
         ・Exp: <span id="display-exp">0</span><br>
         ・力(STR): <span id="display-str">5</span>
     </div>
     <br>
     
-    <button onclick="window.trainPlayer()" style="background:#111; color:#3f3; border:1px solid #3f3; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%;">
+    <button onclick="window.trainPlayer()" style="background:#111; color:#3f3; border:1px solid #3f3; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px;">
         戦闘訓練（+15 Exp）を実行する
+    </button>
+
+    <button onclick="window.becomeWarrior()" style="background:#111; color:#3f3; border:1px solid #3f3; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%; margin-bottom: 10px;">
+        ジョブチェンジ【戦士】
+    </button>
+
+    <button onclick="window.triggerReincarnate()" style="background:#ff3333; color:#fff; border:1px solid #ff3333; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor:pointer; width: 100%;">
+        ★魂の転生を実行する（Lv10必須）★
     </button>
 
     <script type="module" src="main.js"></script>
