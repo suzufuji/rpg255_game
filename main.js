@@ -15,7 +15,9 @@ function updateUI() {
     if(document.getElementById('display-exp')) document.getElementById('display-exp').innerText = player.exp;
     if(document.getElementById('display-str')) document.getElementById('display-str').innerText = player.str;
     if(document.getElementById('display-talent')) document.getElementById('display-talent').innerText = player.talent.toFixed(1);
-
+    if(document.getElementById('display-hp')) document.getElementById('display-hp').innerText = player.hp;
+    if(document.getElementById('display-max-hp')) document.getElementById('display-max-hp').innerText = player.maxHp;
+    if(document.getElementById('display-gold')) document.getElementById('display-gold').innerText = player.gold;
     if(document.getElementById('display-job')) {
         const jobInfo = jobManager.jobTable[player.currentJob];
         if (jobInfo) {
